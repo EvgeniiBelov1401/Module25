@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Library.DAL.Repositories
 {
-    public class BookRepository
+    public class BookRepository:IRepository
     {
-        public void AddBook(AppContext db)
+        public void Add(AppContext db)
         {
             Console.Write("Введите название книги: ");
             var bookTitle = Console.ReadLine();
@@ -22,13 +22,26 @@ namespace Library.DAL.Repositories
                 db.SaveChanges();
         }
 
-        public void DropBook(AppContext db)
+        public void Drop(AppContext db)
         {
             Console.Write("Для удаления введите название книги: ");
             var bookTitle = Console.ReadLine();
             var book = db.Books.Where(b => b.Title == bookTitle).FirstOrDefault();
             db.Books.Remove(book);
             db.SaveChanges();
+        }
+
+        public void ShowAll(AppContext db)
+        {
+            var book = new Book();
+            var allBooks = db.Books.ToList();
+
+            Console.WriteLine($"{nameof(book.Id)}\t\t{nameof(book.Title)}\t\t{nameof(book.YearOfRealise)}");
+            foreach (var bk in allBooks)
+            {
+                Console.WriteLine($"{bk.Id}\t\t{bk.Title}\t\t{bk.YearOfRealise}");
+            }
+            Console.WriteLine();
         }
     }
 }

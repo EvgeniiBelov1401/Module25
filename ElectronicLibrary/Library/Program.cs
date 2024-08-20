@@ -25,18 +25,20 @@ namespace Library
                 //    db.Books.AddRange(book1, book2, book3);
                 //    db.SaveChanges();
 
-                var userRepository = new UserRepository();
-                var bookRepository = new BookRepository();
+                var user = new UserRepository();
+                var book = new BookRepository();
                 
-                userRepository.AddUser(db);
-                userRepository.AddUser(db);
+                user.Add(db);
+                user.Add(db);
 
-                bookRepository.AddBook(db);
-                bookRepository.AddBook(db);
+                book.Add(db);
+                book.Add(db);
 
                 Console.ReadLine();
-                userRepository.DropUser(db);
-                bookRepository.DropBook(db);
+                //user.Drop(db);
+                //book.Drop(db);
+                user.ShowAll(db);
+                book.ShowAll(db);
             }
 
             
