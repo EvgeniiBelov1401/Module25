@@ -21,6 +21,7 @@ namespace Library.DAL.Repositories
                 var book = new Book { Title = bookTitle, YearOfRealise=bookYearOfRealise };
                 db.Books.Add(book);
                 db.SaveChanges();
+            Console.WriteLine("Добавлена новая книга...");
         }
 
         public void Drop(AppContext db)
@@ -30,6 +31,7 @@ namespace Library.DAL.Repositories
             var book = db.Books.Where(b => b.Title == bookTitle).FirstOrDefault();
             db.Books.Remove(book);
             db.SaveChanges();
+            Console.WriteLine("Книга удалена...");
         }
 
         public void ShowAll(AppContext db)
@@ -111,7 +113,7 @@ namespace Library.DAL.Repositories
                         var newYearOfRealiseBook = Console.ReadLine();
                         book.YearOfRealise = newYearOfRealiseBook;
                         db.SaveChanges();
-                        Console.WriteLine("Год выпуска изменен!!!");
+                        Console.WriteLine("Год выпуска изменен...");
                     }
                 }
                 else

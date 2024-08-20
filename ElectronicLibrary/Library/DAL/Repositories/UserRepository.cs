@@ -21,6 +21,7 @@ namespace Library.DAL.Repositories
             var user = new User { Name = userName, Email = userEmail };
             db.Users.Add(user);
             db.SaveChanges();
+            Console.WriteLine("Добавлен новый пользователь...");
         }
        
         public void Drop(AppContext db)
@@ -30,6 +31,7 @@ namespace Library.DAL.Repositories
             var user = db.Users.Where(u => u.Name == userName).FirstOrDefault();
             db.Users.Remove(user);
             db.SaveChanges();
+            Console.WriteLine("Пользователь удален...");
         }
 
         public void ShowAll(AppContext db)
@@ -111,7 +113,7 @@ namespace Library.DAL.Repositories
                         var newUserName=Console.ReadLine();
                         user.Name=newUserName;
                         db.SaveChanges();
-                        Console.WriteLine("Имя изменено!!!");
+                        Console.WriteLine("Имя изменено...");
                     }
                 }
                 else

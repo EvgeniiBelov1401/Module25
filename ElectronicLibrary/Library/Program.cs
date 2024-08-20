@@ -12,46 +12,66 @@ namespace Library
         {
             using (var db = new AppContext())
             {
-
-                //    var user1 = new User { Name = "Александр Иванов", Email = "alivanov@gmail.com" };
-                //    var user2 = new User { Name = "Федор Петров", Email = "fedpetrov@mail.ru" };
-                //    var user3 = new User { Name = "Петр Смирнов", Email = "pesmirnov@yandex.ru" };
-                //    db.Users.AddRange(user1, user2, user3);
-                //    db.SaveChanges();
-
-                //    var book1 = new Book { Title = "Преступление и наказание", YearOfRealise = "1866" };
-                //    var book2 = new Book { Title = "Тихий дон", YearOfRealise = "1932" };
-                //    var book3 = new Book { Title = "Граф Моонте-Кристо", YearOfRealise = "1846" };
-                //    db.Books.AddRange(book1, book2, book3);
-                //    db.SaveChanges();
-
                 var user = new UserRepository();
                 var book = new BookRepository();
+
                 
-                user.Add(db);
-                user.Add(db);
+                while (true)
+                {
+                    Console.WriteLine("Список команд для работы с базой данных:");
+                    Console.WriteLine($"{Comands.adduser}  -  добавить нового пользователя");
+                    Console.WriteLine($"{Comands.addbook}  -  добавить новую книгу");
+                    Console.WriteLine($"{Comands.dropuser}  -  удалить пользователя");
+                    Console.WriteLine($"{Comands.dropbook}  -  удалить книгу");
+                    Console.WriteLine($"{Comands.showusers}  -  показать всех пользователей");
+                    Console.WriteLine($"{Comands.showbooks}  -  показать все книги");
+                    Console.WriteLine($"{Comands.showuserbyid}  -  показать пользователя по ID");
+                    Console.WriteLine($"{Comands.showbookbyid}  -  показать книгу по ID");
+                    Console.WriteLine($"{Comands.updateuser}  -  изменить имя пользователя");
+                    Console.WriteLine($"{Comands.updatebook}  -  изменить год выпуска книги");
+                    Console.Write("\nВведите команду: ");
+                    var comand=Console.ReadLine();
 
-                book.Add(db);
-                book.Add(db);
-
-                Console.ReadLine();
-                //user.Drop(db);
-                //book.Drop(db);
-                user.ShowAll(db);
-                book.ShowAll(db);
-
-                Console.ReadLine();
-
-                user.Update(db);
-                book.Update(db);
-
-                Console.ReadLine();
-
-                user.ShowAll(db);
-                book.ShowAll(db);
-            }
-
-            
+                    switch(comand)
+                    {
+                        case nameof(Comands.adduser):
+                            user.Add(db);
+                            break;
+                        case nameof(Comands.addbook):
+                            book.Add(db);
+                            break;
+                        case nameof(Comands.dropuser):
+                            user.Drop(db);
+                            break;
+                        case nameof(Comands.dropbook):
+                            book.Drop(db);
+                            break;
+                        case nameof(Comands.showusers):
+                            user.ShowAll(db);
+                            break;
+                        case nameof(Comands.showbooks):
+                            book.ShowAll(db);
+                            break;
+                        case nameof(Comands.showuserbyid):
+                            user.ShowById(db);
+                            break;
+                        case nameof(Comands.showbookbyid):
+                            book.ShowById(db);
+                            break;
+                        case nameof(Comands.updateuser):
+                            user.Update(db);
+                            break;
+                        case nameof(Comands.updatebook):
+                            book.Update(db);
+                            break;
+                        default:
+                            Console.WriteLine("Введите корректную команду!!!");
+                            break;
+                    }
+                    Console.ReadLine();
+                    Console.Clear();
+                }
+            }           
         }
     }
 }
