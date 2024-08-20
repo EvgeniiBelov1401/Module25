@@ -12,5 +12,7 @@ namespace Library.DAL.Repositories
         void Drop(AppContext db);
 
         void ShowAll(AppContext db);
+
+        void ShowById(AppContext db);
     }
 }

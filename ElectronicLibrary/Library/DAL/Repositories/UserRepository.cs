@@ -1,4 +1,5 @@
 ﻿using Library.DAL.Entities;
+using Library.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,47 @@ namespace Library.DAL.Repositories
                 Console.WriteLine($"{us.Id}\t\t{us.Name}\t\t{us.Email}");
             }
             Console.WriteLine();
+        }
+
+        public void ShowById(AppContext db)
+        {
+            Console.Write("Введите ID клиента: ");
+            try
+            {
+                int inputId;
+                if(int.TryParse(Console.ReadLine(),out inputId))
+                {
+                    var user = new User();
+                    int maxId = 0;
+                    var allUsers = db.Users.ToList();
+                    foreach(var us in allUsers)
+                    {
+                        if (us.Id > maxId) maxId = us.Id;
+                    }
+                    if (inputId <= 0 || inputId>maxId)
+                    {
+                        throw new NoIdException();
+                    }
+                    else
+                    {
+                        var userById = db.Users.Where(u => u.Id == inputId).ToList();
+                        Console.WriteLine($"{nameof(user.Id)}\t\t{nameof(user.Name)}\t\t{nameof(user.Email)}");
+                        foreach (var us in userById)
+                        {
+                            Console.WriteLine($"{us.Id}\t\t{us.Name}\t\t{us.Email}");
+                        }
+                        Console.WriteLine();
+                    }                   
+                }
+                else
+                {
+                    throw new NoIdException();
+                }
+            }
+            catch(NoIdException)
+            {
+                Console.WriteLine("Введите корректный ID\n");
+            }
         }
     }
 }
