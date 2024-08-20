@@ -29,7 +29,14 @@ namespace Library
                 var bookRepository = new BookRepository();
                 
                 userRepository.AddUser(db);
+                userRepository.AddUser(db);
+
                 bookRepository.AddBook(db);
+                bookRepository.AddBook(db);
+
+                Console.ReadLine();
+                userRepository.DropUser(db);
+                bookRepository.DropBook(db);
             }
 
             

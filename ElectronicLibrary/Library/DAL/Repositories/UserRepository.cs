@@ -19,8 +19,16 @@ namespace Library.DAL.Repositories
             
                 var user = new User { Name = userName, Email = userEmail };
                 db.Users.Add(user);
-                db.SaveChanges();
-            
+                db.SaveChanges();            
+        }
+
+        public void DropUser(AppContext db)
+        {
+            Console.Write("Для удаления введите имя пользователя: ");
+            var userName = Console.ReadLine();
+            var user = db.Users.Where(u => u.Name == userName).FirstOrDefault();
+            db.Users.Remove(user);
+            db.SaveChanges();
         }
     }
 }
