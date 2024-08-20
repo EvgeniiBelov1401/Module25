@@ -85,5 +85,44 @@ namespace Library.DAL.Repositories
                 Console.WriteLine("Введите корректный ID\n");
             }
         }
+
+        public void Update(AppContext db)
+        {
+            Console.Write("Введите ID книги: ");
+            try
+            {
+                int inputId;
+                if (int.TryParse(Console.ReadLine(), out inputId))
+                {
+                    int maxId = 0;
+                    var allBooks = db.Books.ToList();
+                    foreach (var bk in allBooks)
+                    {
+                        if (bk.Id > maxId) maxId = bk.Id;
+                    }
+                    if (inputId <= 0 || inputId > maxId)
+                    {
+                        throw new NoIdException();
+                    }
+                    else
+                    {
+                        var book = db.Books.Where(b => b.Id == inputId).FirstOrDefault();
+                        Console.Write("Введите новый год выпуска книги: ");
+                        var newYearOfRealiseBook = Console.ReadLine();
+                        book.YearOfRealise = newYearOfRealiseBook;
+                        db.SaveChanges();
+                        Console.WriteLine("Год выпуска изменен!!!");
+                    }
+                }
+                else
+                {
+                    throw new NoIdException();
+                }
+            }
+            catch (NoIdException)
+            {
+                Console.WriteLine("Введите корректный ID\n");
+            }
+        }
     }
 }

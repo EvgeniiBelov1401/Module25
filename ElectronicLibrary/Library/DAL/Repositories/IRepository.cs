@@ -14,5 +14,7 @@ namespace Library.DAL.Repositories
         void ShowAll(AppContext db);
 
         void ShowById(AppContext db);
+
+        void Update(AppContext db);
     }
 }

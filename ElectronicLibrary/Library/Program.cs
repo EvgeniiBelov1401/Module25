@@ -37,11 +37,18 @@ namespace Library
                 Console.ReadLine();
                 //user.Drop(db);
                 //book.Drop(db);
-                //user.ShowAll(db);
-                //book.ShowAll(db);
+                user.ShowAll(db);
+                book.ShowAll(db);
 
-                user.ShowById(db);
-                book.ShowById(db);
+                Console.ReadLine();
+
+                user.Update(db);
+                book.Update(db);
+
+                Console.ReadLine();
+
+                user.ShowAll(db);
+                book.ShowAll(db);
             }
 
             

@@ -85,5 +85,44 @@ namespace Library.DAL.Repositories
                 Console.WriteLine("Введите корректный ID\n");
             }
         }
+
+        public void Update(AppContext db)
+        {
+            Console.Write("Введите ID клиента: ");
+            try
+            {
+                int inputId;
+                if (int.TryParse(Console.ReadLine(), out inputId))
+                {
+                    int maxId = 0;
+                    var allUsers = db.Users.ToList();
+                    foreach (var us in allUsers)
+                    {
+                        if (us.Id > maxId) maxId = us.Id;
+                    }
+                    if (inputId <= 0 || inputId > maxId)
+                    {
+                        throw new NoIdException();
+                    }
+                    else
+                    {
+                        var user=db.Users.Where(u=>u.Id == inputId).FirstOrDefault();
+                        Console.Write("Введите новое имя пользователя: ");
+                        var newUserName=Console.ReadLine();
+                        user.Name=newUserName;
+                        db.SaveChanges();
+                        Console.WriteLine("Имя изменено!!!");
+                    }
+                }
+                else
+                {
+                    throw new NoIdException();
+                }
+            }
+            catch (NoIdException)
+            {
+                Console.WriteLine("Введите корректный ID\n");
+            }
+        }
     }
 }
