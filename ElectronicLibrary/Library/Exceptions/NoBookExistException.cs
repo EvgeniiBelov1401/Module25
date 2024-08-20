@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library.Exceptions
 {
-    public class NoBookExist:Exception
+    public class NoBookExistException:Exception
     {
     }
 }

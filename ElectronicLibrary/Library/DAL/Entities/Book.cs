@@ -13,5 +13,7 @@ namespace Library.DAL.Entities
         public string? YearOfRealise { get; set; }
 
         public List<User> Users { get; set; }
+
+        
     }
 }

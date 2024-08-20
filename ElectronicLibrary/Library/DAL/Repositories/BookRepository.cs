@@ -28,23 +28,50 @@ namespace Library.DAL.Repositories
         {
             Console.Write("Для удаления введите название книги: ");
             var bookTitle = Console.ReadLine();
-            var book = db.Books.Where(b => b.Title == bookTitle).FirstOrDefault();
-            db.Books.Remove(book);
-            db.SaveChanges();
-            Console.WriteLine("Книга удалена...");
+            var book = new Book();
+            book = db.Books.Where(b => b.Title == bookTitle).FirstOrDefault();
+            try
+            {
+                if (book == null)
+                {
+                    throw new NullReferenceException();
+                }
+                else
+                {
+                    db.Books.Remove(book);
+                    db.SaveChanges();
+                    Console.WriteLine("Книга удалена...");
+                }
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Книги с таким названием нет в базе данных...\n");
+            }            
         }
 
         public void ShowAll(AppContext db)
         {
             var book = new Book();
             var allBooks = db.Books.ToList();
-
-            Console.WriteLine($"{nameof(book.Id)}\t\t{nameof(book.Title)}\t\t{nameof(book.YearOfRealise)}");
-            foreach (var bk in allBooks)
+            try
             {
-                Console.WriteLine($"{bk.Id}\t\t{bk.Title}\t\t{bk.YearOfRealise}");
-            }
-            Console.WriteLine();
+                if (allBooks.Count==0)
+                {
+                    throw new EmptyTableException();
+                }
+                else
+                {
+                    Console.WriteLine($"{nameof(book.Id)}\t\t{nameof(book.Title)}\t\t{nameof(book.YearOfRealise)}");
+                    foreach (var bk in allBooks)
+                    {
+                        Console.WriteLine($"{bk.Id}\t\t{bk.Title}\t\t{bk.YearOfRealise}");
+                    }
+                    Console.WriteLine();
+                }
+            }catch (EmptyTableException)
+            {
+                Console.WriteLine("Таблица пустая...");
+            }            
         }
 
         public void ShowById(AppContext db)
@@ -52,17 +79,28 @@ namespace Library.DAL.Repositories
             Console.Write("Введите ID книги: ");
             try
             {
+                var bookById = new Book();
                 int inputId;
                 if (int.TryParse(Console.ReadLine(), out inputId))
-                {
-                    var book = new Book();
-                    
-                    var bookById = db.Books.Where(b => b.Id == inputId).FirstOrDefault();
-                    Console.WriteLine($"{nameof(book.Id)}\t\t{nameof(book.Title)}\t\t{nameof(book.YearOfRealise)}");
-                        
-                    Console.WriteLine($"{bookById.Id}\t\t{bookById.Title}\t\t{bookById.YearOfRealise}");
-                        
-                    Console.WriteLine();                    
+                {                                        
+                    bookById = db.Books.Where(b => b.Id == inputId).FirstOrDefault();
+                    try
+                    {
+                        if (bookById==null)
+                        {
+                            throw new NullReferenceException();
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{nameof(bookById.Id)}\t\t{nameof(bookById.Title)}\t\t{nameof(bookById.YearOfRealise)}");
+                            Console.WriteLine($"{bookById.Id}\t\t{bookById.Title}\t\t{bookById.YearOfRealise}");
+                            Console.WriteLine();
+                        }
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Console.WriteLine("Книги с таким ID нет в базе данных...\n");
+                    }                                        
                 }
                 else
                 {
@@ -72,11 +110,7 @@ namespace Library.DAL.Repositories
             catch (NoIdException)
             {
                 Console.WriteLine("Книги с таким ID нет в базе данных...\n");
-            }
-            catch (NullReferenceException)
-            {
-                Console.WriteLine("Книги с таким ID нет в базе данных...\n");
-            }
+            }            
         }
 
         public void Update(AppContext db)
@@ -84,15 +118,30 @@ namespace Library.DAL.Repositories
             Console.Write("Введите ID книги: ");
             try
             {
+                var book = new Book();
                 int inputId;
                 if (int.TryParse(Console.ReadLine(), out inputId))
                 {                    
-                    var book = db.Books.Where(b => b.Id == inputId).FirstOrDefault();
-                    Console.Write("Введите новый год выпуска книги: ");
-                    var newYearOfRealiseBook = Console.ReadLine();
-                    book.YearOfRealise = newYearOfRealiseBook;
-                    db.SaveChanges();
-                    Console.WriteLine("Год выпуска изменен...");                   
+                    book = db.Books.Where(b => b.Id == inputId).FirstOrDefault();
+                    try
+                    {
+                        if (book==null)
+                        {
+                            throw new NullReferenceException();
+                        }
+                        else
+                        {
+                            Console.Write("Введите новый год выпуска книги: ");
+                            var newYearOfRealiseBook = Console.ReadLine();
+                            book.YearOfRealise = newYearOfRealiseBook;
+                            db.SaveChanges();
+                            Console.WriteLine("Год выпуска изменен...");
+                        }
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Console.WriteLine("Книги с таким ID нет в базе данных...\n");
+                    }                                       
                 }
                 else
                 {
@@ -102,11 +151,7 @@ namespace Library.DAL.Repositories
             catch (NoIdException)
             {
                 Console.WriteLine("Книги с таким ID нет в базе данных...\n");
-            }
-            catch (NullReferenceException)
-            {
-                Console.WriteLine("Книги с таким ID нет в базе данных...\n");
-            }
+            }            
         }
     }
 }
