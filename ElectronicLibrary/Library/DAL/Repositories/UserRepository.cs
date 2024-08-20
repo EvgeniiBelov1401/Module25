@@ -12,16 +12,39 @@ namespace Library.DAL.Repositories
     {
         public void Add(AppContext db)
         {
+            var user=new User();
+            var book=new Book();
             Console.Write("Введите имя пользователя: ");
             var userName = Console.ReadLine();
             Console.Write("Введите Email пользователя: ");
             var userEmail = Console.ReadLine();
+            Console.Write("Введите ID книги пользователя: ");
+            int userBookId;
+            try
+            {
+                if (int.TryParse(Console.ReadLine(), out userBookId))
+                {
+                    var searchBook=db.Books.Where(b=>b.Id==userBookId).FirstOrDefault();
 
-
-            var user = new User { Name = userName, Email = userEmail };
-            db.Users.Add(user);
-            db.SaveChanges();
-            Console.WriteLine("Добавлен новый пользователь...");
+                    user = new User { Name = userName, Email = userEmail, BookId = searchBook.Id };
+                    db.Users.Add(user);
+                    db.SaveChanges();
+                    Console.WriteLine("Добавлен новый пользователь...");
+                }
+                else
+                {
+                    throw new NoBookExist();
+                }
+            }
+            catch (NoBookExist) 
+            {
+                Console.WriteLine("Книги с таким ID нет в базе данных\n");
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Книги с таким ID нет в базе данных\n");
+            }
+                        
         }
        
         public void Drop(AppContext db)
@@ -39,10 +62,10 @@ namespace Library.DAL.Repositories
             var user = new User();
             var allUsers=db.Users.ToList();
 
-            Console.WriteLine($"{nameof(user.Id)}\t\t{nameof(user.Name)}\t\t{nameof(user.Email)}");
+            Console.WriteLine($"{nameof(user.Id)}\t\t{nameof(user.Name)}\t\t{nameof(user.Email)}\t\t{nameof(user.BookId)}");
             foreach (var us in allUsers)
             {
-                Console.WriteLine($"{us.Id}\t\t{us.Name}\t\t{us.Email}");
+                Console.WriteLine($"{us.Id}\t\t{us.Name}\t\t{us.Email}\t\t{us.BookId}");
             }
             Console.WriteLine();
         }
@@ -56,26 +79,11 @@ namespace Library.DAL.Repositories
                 if(int.TryParse(Console.ReadLine(),out inputId))
                 {
                     var user = new User();
-                    int maxId = 0;
-                    var allUsers = db.Users.ToList();
-                    foreach(var us in allUsers)
-                    {
-                        if (us.Id > maxId) maxId = us.Id;
-                    }
-                    if (inputId <= 0 || inputId>maxId)
-                    {
-                        throw new NoIdException();
-                    }
-                    else
-                    {
-                        var userById = db.Users.Where(u => u.Id == inputId).ToList();
-                        Console.WriteLine($"{nameof(user.Id)}\t\t{nameof(user.Name)}\t\t{nameof(user.Email)}");
-                        foreach (var us in userById)
-                        {
-                            Console.WriteLine($"{us.Id}\t\t{us.Name}\t\t{us.Email}");
-                        }
-                        Console.WriteLine();
-                    }                   
+                   
+                    var userById = db.Users.Where(u => u.Id == inputId).FirstOrDefault();
+                    Console.WriteLine($"{nameof(user.Id)}\t\t{nameof(user.Name)}\t\t{nameof(user.Email)}\t\t{nameof(user.BookId)}");                        
+                    Console.WriteLine($"{userById.Id}\t\t{userById.Name}\t\t{userById.Email}\t\t{userById.BookId}");
+                    Console.WriteLine();                                       
                 }
                 else
                 {
@@ -84,7 +92,11 @@ namespace Library.DAL.Repositories
             }
             catch(NoIdException)
             {
-                Console.WriteLine("Введите корректный ID\n");
+                Console.WriteLine("Пользователя с таким ID не существует...\n");
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Пользователя с таким ID не существует...\n");
             }
         }
 
@@ -95,26 +107,13 @@ namespace Library.DAL.Repositories
             {
                 int inputId;
                 if (int.TryParse(Console.ReadLine(), out inputId))
-                {
-                    int maxId = 0;
-                    var allUsers = db.Users.ToList();
-                    foreach (var us in allUsers)
-                    {
-                        if (us.Id > maxId) maxId = us.Id;
-                    }
-                    if (inputId <= 0 || inputId > maxId)
-                    {
-                        throw new NoIdException();
-                    }
-                    else
-                    {
-                        var user=db.Users.Where(u=>u.Id == inputId).FirstOrDefault();
-                        Console.Write("Введите новое имя пользователя: ");
-                        var newUserName=Console.ReadLine();
-                        user.Name=newUserName;
-                        db.SaveChanges();
-                        Console.WriteLine("Имя изменено...");
-                    }
+                {                   
+                    var user=db.Users.Where(u=>u.Id == inputId).FirstOrDefault();
+                    Console.Write("Введите новое имя пользователя: ");
+                    var newUserName=Console.ReadLine();
+                    user.Name=newUserName;
+                    db.SaveChanges();
+                    Console.WriteLine("Имя изменено...");                    
                 }
                 else
                 {
@@ -123,7 +122,11 @@ namespace Library.DAL.Repositories
             }
             catch (NoIdException)
             {
-                Console.WriteLine("Введите корректный ID\n");
+                Console.WriteLine("Пользователя с таким ID не существует...\n");
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Пользователя с таким ID не существует...\n");
             }
         }
     }

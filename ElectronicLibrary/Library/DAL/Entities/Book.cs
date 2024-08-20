@@ -11,5 +11,7 @@ namespace Library.DAL.Entities
         public int Id { get; set; }
         public string? Title { get; set; }
         public string? YearOfRealise { get; set; }
+
+        public List<User> Users { get; set; }
     }
 }

@@ -56,26 +56,13 @@ namespace Library.DAL.Repositories
                 if (int.TryParse(Console.ReadLine(), out inputId))
                 {
                     var book = new Book();
-                    int maxId = 0;
-                    var allBooks = db.Books.ToList();
-                    foreach (var bk in allBooks)
-                    {
-                        if (bk.Id > maxId) maxId = bk.Id;
-                    }
-                    if (inputId <= 0 || inputId > maxId)
-                    {
-                        throw new NoIdException();
-                    }
-                    else
-                    {
-                        var bookById = db.Books.Where(b => b.Id == inputId).ToList();
-                        Console.WriteLine($"{nameof(book.Id)}\t\t{nameof(book.Title)}\t\t{nameof(book.YearOfRealise)}");
-                        foreach (var bk in bookById)
-                        {
-                            Console.WriteLine($"{bk.Id}\t\t{bk.Title}\t\t{bk.YearOfRealise}");
-                        }
-                        Console.WriteLine();
-                    }
+                    
+                    var bookById = db.Books.Where(b => b.Id == inputId).FirstOrDefault();
+                    Console.WriteLine($"{nameof(book.Id)}\t\t{nameof(book.Title)}\t\t{nameof(book.YearOfRealise)}");
+                        
+                    Console.WriteLine($"{bookById.Id}\t\t{bookById.Title}\t\t{bookById.YearOfRealise}");
+                        
+                    Console.WriteLine();                    
                 }
                 else
                 {
@@ -84,7 +71,11 @@ namespace Library.DAL.Repositories
             }
             catch (NoIdException)
             {
-                Console.WriteLine("Введите корректный ID\n");
+                Console.WriteLine("Книги с таким ID нет в базе данных...\n");
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Книги с таким ID нет в базе данных...\n");
             }
         }
 
@@ -95,26 +86,13 @@ namespace Library.DAL.Repositories
             {
                 int inputId;
                 if (int.TryParse(Console.ReadLine(), out inputId))
-                {
-                    int maxId = 0;
-                    var allBooks = db.Books.ToList();
-                    foreach (var bk in allBooks)
-                    {
-                        if (bk.Id > maxId) maxId = bk.Id;
-                    }
-                    if (inputId <= 0 || inputId > maxId)
-                    {
-                        throw new NoIdException();
-                    }
-                    else
-                    {
-                        var book = db.Books.Where(b => b.Id == inputId).FirstOrDefault();
-                        Console.Write("Введите новый год выпуска книги: ");
-                        var newYearOfRealiseBook = Console.ReadLine();
-                        book.YearOfRealise = newYearOfRealiseBook;
-                        db.SaveChanges();
-                        Console.WriteLine("Год выпуска изменен...");
-                    }
+                {                    
+                    var book = db.Books.Where(b => b.Id == inputId).FirstOrDefault();
+                    Console.Write("Введите новый год выпуска книги: ");
+                    var newYearOfRealiseBook = Console.ReadLine();
+                    book.YearOfRealise = newYearOfRealiseBook;
+                    db.SaveChanges();
+                    Console.WriteLine("Год выпуска изменен...");                   
                 }
                 else
                 {
@@ -123,7 +101,11 @@ namespace Library.DAL.Repositories
             }
             catch (NoIdException)
             {
-                Console.WriteLine("Введите корректный ID\n");
+                Console.WriteLine("Книги с таким ID нет в базе данных...\n");
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("Книги с таким ID нет в базе данных...\n");
             }
         }
     }

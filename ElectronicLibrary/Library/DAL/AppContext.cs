@@ -15,6 +15,7 @@ namespace Library.DAL
 
         public AppContext()
         {
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
