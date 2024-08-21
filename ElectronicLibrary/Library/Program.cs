@@ -3,6 +3,7 @@ using Library.DAL;
 using AppContext = Library.DAL.AppContext;
 using Library.DAL.Entities;
 using Library.DAL.Repositories;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace Library
 {
@@ -13,7 +14,7 @@ namespace Library
             using (var db = new AppContext())
             {
                 var user = new UserRepository();
-                var book = new BookRepository();
+                var book = new BookRepository(db);
 
                 
                 while (true)

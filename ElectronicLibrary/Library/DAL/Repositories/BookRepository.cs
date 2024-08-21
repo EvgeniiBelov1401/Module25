@@ -10,6 +10,11 @@ namespace Library.DAL.Repositories
 {
     public class BookRepository:IRepository
     {
+        public BookRepository(AppContext db)
+        {
+            FillAthorTable(db);
+            FillGenreTable(db);
+        }
         public void Add(AppContext db)
         {
             Console.Write("Введите название книги: ");
@@ -17,11 +22,76 @@ namespace Library.DAL.Repositories
             Console.Write("Введите год написания книги: ");
             var bookYearOfRealise = Console.ReadLine();
 
-
-                var book = new Book { Title = bookTitle, YearOfRealise=bookYearOfRealise };
-                db.Books.Add(book);
-                db.SaveChanges();
-            Console.WriteLine("Добавлена новая книга...");
+            Console.Write("Введите ID автора книги: ");
+            int authorBookId;
+            var searchAuthor = new Author();
+            var book=new Book();    
+            try
+            {
+                if (int.TryParse(Console.ReadLine(), out authorBookId))
+                {
+                    searchAuthor = db.Authors.Where(a => a.Id == authorBookId).FirstOrDefault();
+                    try
+                    {
+                        if (searchAuthor == null)
+                        {
+                            throw new NullReferenceException();
+                        }
+                        else
+                        {
+                            book.AuthorId=searchAuthor.Id;
+                            Console.Write("Введите ID ажанра книги: ");
+                            int genreBookId;
+                            var searchGenre = new Genre();
+                            try
+                            {
+                                if (int.TryParse(Console.ReadLine(), out genreBookId))
+                                {
+                                    searchGenre = db.Genres.Where(g => g.Id == genreBookId).FirstOrDefault();
+                                    try
+                                    {
+                                        if (searchGenre == null)
+                                        {
+                                            throw new NullReferenceException();
+                                        }
+                                        else
+                                        {
+                                            book = new Book { Title = bookTitle, YearOfRealise = bookYearOfRealise, AuthorId = book.AuthorId, GenreId = searchGenre.Id };
+                                            db.Books.Add(book);
+                                            db.SaveChanges();
+                                            Console.WriteLine("Добавлена новая книга...");
+                                        }
+                                    }
+                                    catch (NullReferenceException)
+                                    {
+                                        Console.WriteLine("Жанра с таким ID нет в базе данных...\n");
+                                    }
+                                }
+                                else
+                                {
+                                    throw new NoIdException();
+                                }
+                            }
+                            catch (NoIdException)
+                            {
+                                Console.WriteLine("Жанра с таким ID нет в базе данных...\n");
+                            }
+                        }
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Console.WriteLine("Автора с таким ID нет в базе данных...\n");
+                    }
+                }
+                else
+                {
+                    throw new NoIdException();
+                }
+            }
+            catch (NoIdException)
+            {
+                Console.WriteLine("Автора с таким ID нет в базе данных...\n");
+            }                   
         }
 
         public void Drop(AppContext db)
@@ -152,6 +222,35 @@ namespace Library.DAL.Repositories
             {
                 Console.WriteLine("Книги с таким ID нет в базе данных...\n");
             }            
+        }
+
+        private static void FillAthorTable(AppContext db)
+        {
+            var author1 = new Author {Name="Александр Пушкин" };
+            var author2 = new Author { Name = "Михаил Булгаков" };
+            var author3 = new Author { Name = "Федор Достоевский" };
+            var author4 = new Author { Name = "Конан Дойл" };
+            var author5 = new Author { Name = "Александр Дюма" };
+            var author6 = new Author { Name = "Валентин Пикуль" };
+            var author7 = new Author { Name = "Агата Кристи" };
+            var author8 = new Author { Name = "Иван Тургенев" };
+            var author9 = new Author { Name = "Лев Толстой" };
+            var author10 = new Author { Name = "Марио Пьюзо" };
+
+            db.Authors.AddRange(author1, author2, author3, author4, author5, author6, author7, author8, author9, author10);
+            db.SaveChanges();
+        }
+
+        private static void FillGenreTable(AppContext db)
+        {
+            var genre1 = new Genre {Name="Детектив"};
+            var genre2 = new Genre { Name = "Исторический роман" };
+            var genre3 = new Genre { Name = "Прикличения" };
+            var genre4 = new Genre { Name = "Криминальный роман" };
+            var genre5 = new Genre { Name = "Трагедия" };
+
+            db.Genres.AddRange(genre1,genre2,genre3,genre4,genre5);
+            db.SaveChanges();
         }
     }
 }
