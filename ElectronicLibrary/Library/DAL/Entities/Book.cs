@@ -12,7 +12,15 @@ namespace Library.DAL.Entities
         public string? Title { get; set; }
         public string? YearOfRealise { get; set; }
 
-        public List<User> Users { get; set; }
+        public int AuthorId { get; set; }
+
+        public Author? Author { get; set; }
+
+        public int GenreId { get; set; }
+        public Genre? Genre { get; set; }
+
+        public List<User>? Users { get; set; }
+
 
         
     }

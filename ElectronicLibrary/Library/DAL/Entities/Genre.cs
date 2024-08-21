@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace Library.DAL.Entities
 {
-    public class User
+    public class Genre
     {
         public int Id { get; set; }
+
         public string? Name { get; set; }
-        public string? Email { get; set; }
 
-        public int BookId { get; set; }
-
-        public Book? Book { get; set; }
-
+        public List<Book>? Books { get; set; }
     }
 }
