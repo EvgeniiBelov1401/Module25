@@ -21,7 +21,7 @@ namespace Library.DAL.Repositories
             var bookTitle = Console.ReadLine();
             Console.Write("Введите год написания книги: ");
             var bookYearOfRealise = Console.ReadLine();
-
+            #region Добавление Автора и Жанра из таблиц Authors и Genres
             Console.Write("Введите ID автора книги: ");
             int authorBookId;
             var searchAuthor = new Author();
@@ -92,7 +92,8 @@ namespace Library.DAL.Repositories
             catch (NoIdException)
             {
                 Console.WriteLine("Автора с таким ID нет в базе данных...\n");
-            }                   
+            }
+            #endregion
         }
 
         public void Drop(AppContext db)

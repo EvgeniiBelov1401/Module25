@@ -18,6 +18,7 @@ namespace Library.DAL.Repositories
             var userName = Console.ReadLine();
             Console.Write("Введите Email пользователя: ");
             var userEmail = Console.ReadLine();
+            #region Добавление Книги из таблицы Books
             Console.Write("Введите ID книги пользователя: ");
             int userBookId;
             try
@@ -52,9 +53,10 @@ namespace Library.DAL.Repositories
             catch (NoBookExistException) 
             {
                 Console.WriteLine("Книги с таким ID нет в базе данных...\n");
-            }                                  
+            }
+            #endregion
         }
-       
+
         public void Drop(AppContext db)
         {
             Console.Write("Для удаления введите имя пользователя: ");
