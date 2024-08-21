@@ -40,6 +40,7 @@ namespace Library.DAL.Repositories
                         else
                         {
                             book.AuthorId=searchAuthor.Id;
+
                             Console.Write("Введите ID ажанра книги: ");
                             int genreBookId;
                             var searchGenre = new Genre();
