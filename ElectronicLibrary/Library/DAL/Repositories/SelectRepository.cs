@@ -51,6 +51,26 @@ namespace Library.DAL.Repositories
                 Console.WriteLine("Введите корректные данные...");
             }
         }
+        public void ExecuteEx2(AppContext db)
+        {
+            Console.WriteLine("Авторы книг:");
+            var bookAuthor = db.Authors.Where(g => g.Name != string.Empty).ToList();
+            foreach (var author in bookAuthor)
+            {
+                Console.WriteLine($"\t{author.Name}");
+            }
+            Console.Write("Выберите автора: ");
+            var choosenAuthor=Console.ReadLine();
+            var booksByAuthorCount=db.Books.Include(a=>a.Author).Where(a=>a.Author.Name==choosenAuthor).ToList().Count();
+            if (booksByAuthorCount==0)
+            {
+                Console.WriteLine($"Книг автора {choosenAuthor} нет в библиотеке...");
+            }
+            else
+            {
+                Console.WriteLine($"В библиотеке книг автора {choosenAuthor}: {booksByAuthorCount} шт.");
+            }
+        }
 
         public static void AddExerciseList()
         {
