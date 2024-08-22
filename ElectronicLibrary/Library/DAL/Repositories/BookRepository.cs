@@ -43,7 +43,7 @@ namespace Library.DAL.Repositories
                             {
                                 book.AuthorId = searchAuthor.Id;
 
-                                Console.Write("Введите ID ажанра книги: ");
+                                Console.Write("Введите ID жанра книги: ");
                                 int genreBookId;
                                 var searchGenre = new Genre();
                                 try
@@ -263,7 +263,7 @@ namespace Library.DAL.Repositories
         {
             var genre1 = new Genre {Name="Детектив"};
             var genre2 = new Genre { Name = "Исторический роман" };
-            var genre3 = new Genre { Name = "Прикличения" };
+            var genre3 = new Genre { Name = "Приключения" };
             var genre4 = new Genre { Name = "Криминальный роман" };
             var genre5 = new Genre { Name = "Трагедия" };
 

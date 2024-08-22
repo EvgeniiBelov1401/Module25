@@ -28,11 +28,18 @@ namespace Library.DAL.Repositories
                 if (int.TryParse(Console.ReadLine(), out yearMax))
                 {
                     var selectList = db.Books.Where(y1=>y1.YearOfRealise>=yearMin).Where(y2=>y2.YearOfRealise<=yearMax).Include(g => g.Genre).Where(g => g.Genre.Name == choosenGenre).ToList();
-                    foreach (var book in selectList)
+                    if (selectList.Count == 0)
                     {
-                        Console.WriteLine($"{book.Title}\t{book.YearOfRealise}\t{book.Genre}");
+                        Console.WriteLine("Книг с указанными параметрами нет в базе данных...");
                     }
-
+                    else
+                    {
+                        foreach (var book in selectList)
+                        {
+                            Console.WriteLine($"{book.Title}({book.YearOfRealise}) - {book.Genre.Name}");
+                        }
+                    }
+                    
                 }
                 else
                 {
