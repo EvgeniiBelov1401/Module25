@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 namespace Library.DAL.Repositories
 {
     public class SelectRepository
-    {      
+    {
         public void ExecuteEx1(AppContext db)
         {
             int yearMin;
             int yearMax;
             Console.WriteLine("Жанры книг:");
-            var bookGenre = db.Genres.Where(g=>g.Name!=string.Empty).ToList();
+            var bookGenre = db.Genres.Where(g => g.Name != string.Empty).ToList();
             foreach (var genre in bookGenre)
             {
                 Console.WriteLine($"\t{genre.Name}");
             }
             Console.Write("Выберите жанр: ");
-            var choosenGenre=Console.ReadLine();
+            var choosenGenre = Console.ReadLine();
             Console.Write("Выберите год от: ");
-            if (int.TryParse(Console.ReadLine(),out yearMin))
+            if (int.TryParse(Console.ReadLine(), out yearMin))
             {
                 Console.Write("Выберите год по: ");
                 if (int.TryParse(Console.ReadLine(), out yearMax))
                 {
-                    var selectList = db.Books.Where(y1=>y1.YearOfRealise>=yearMin).Where(y2=>y2.YearOfRealise<=yearMax).Include(g => g.Genre).Where(g => g.Genre.Name == choosenGenre).ToList();
+                    var selectList = db.Books.Where(y1 => y1.YearOfRealise >= yearMin).Where(y2 => y2.YearOfRealise <= yearMax).Include(g => g.Genre).Where(g => g.Genre.Name == choosenGenre).ToList();
                     if (selectList.Count == 0)
                     {
                         Console.WriteLine("Книг с указанными параметрами нет в базе данных...");
@@ -39,7 +39,7 @@ namespace Library.DAL.Repositories
                             Console.WriteLine($"{book.Title}({book.YearOfRealise}) - {book.Genre.Name}");
                         }
                     }
-                    
+
                 }
                 else
                 {
@@ -54,21 +54,41 @@ namespace Library.DAL.Repositories
         public void ExecuteEx2(AppContext db)
         {
             Console.WriteLine("Авторы книг:");
-            var bookAuthor = db.Authors.Where(g => g.Name != string.Empty).ToList();
+            var bookAuthor = db.Authors.Where(a => a.Name != string.Empty).ToList();
             foreach (var author in bookAuthor)
             {
                 Console.WriteLine($"\t{author.Name}");
             }
             Console.Write("Выберите автора: ");
-            var choosenAuthor=Console.ReadLine();
-            var booksByAuthorCount=db.Books.Include(a=>a.Author).Where(a=>a.Author.Name==choosenAuthor).ToList().Count();
-            if (booksByAuthorCount==0)
+            var choosenAuthor = Console.ReadLine();
+            var booksByAuthorCount = db.Books.Include(a => a.Author).Where(a => a.Author.Name == choosenAuthor).ToList().Count();
+            if (booksByAuthorCount == 0)
             {
                 Console.WriteLine($"Книг автора {choosenAuthor} нет в библиотеке...");
             }
             else
             {
                 Console.WriteLine($"В библиотеке книг автора {choosenAuthor}: {booksByAuthorCount} шт.");
+            }
+        }
+        public void ExecuteEx3(AppContext db)
+        {
+            Console.WriteLine("Жанры книг:");
+            var bookGenre = db.Genres.Where(g => g.Name != string.Empty).ToList();
+            foreach (var genre in bookGenre)
+            {
+                Console.WriteLine($"\t{genre.Name}");
+            }
+            Console.Write("Выберите жанр: ");
+            var choosenGenre = Console.ReadLine();
+            var booksByGenreCount = db.Books.Include(g => g.Genre).Where(g => g.Genre.Name == choosenGenre).ToList().Count();
+            if (booksByGenreCount == 0)
+            {
+                Console.WriteLine($"Жанра {choosenGenre} нет в библиотеке...");
+            }
+            else
+            {
+                Console.WriteLine($"В библиотеке книг жанра {choosenGenre}: {booksByGenreCount} шт.");
             }
         }
 
