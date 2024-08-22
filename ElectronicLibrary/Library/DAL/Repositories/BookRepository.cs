@@ -20,80 +20,89 @@ namespace Library.DAL.Repositories
             Console.Write("Введите название книги: ");
             var bookTitle = Console.ReadLine();
             Console.Write("Введите год написания книги: ");
-            var bookYearOfRealise = Console.ReadLine();
-            #region Добавление Автора и Жанра из таблиц Authors и Genres
-            Console.Write("Введите ID автора книги: ");
-            int authorBookId;
-            var searchAuthor = new Author();
-            var book=new Book();    
-            try
+            int bookYearOfRealise;
+            if (int.TryParse(Console.ReadLine(),out bookYearOfRealise))
             {
-                if (int.TryParse(Console.ReadLine(), out authorBookId))
+                #region Добавление Автора и Жанра из таблиц Authors и Genres
+                Console.Write("Введите ID автора книги: ");
+                int authorBookId;
+                var searchAuthor = new Author();
+                var book = new Book();
+                try
                 {
-                    searchAuthor = db.Authors.Where(a => a.Id == authorBookId).FirstOrDefault();
-                    try
+                    if (int.TryParse(Console.ReadLine(), out authorBookId))
                     {
-                        if (searchAuthor == null)
+                        searchAuthor = db.Authors.Where(a => a.Id == authorBookId).FirstOrDefault();
+                        try
                         {
-                            throw new NullReferenceException();
-                        }
-                        else
-                        {
-                            book.AuthorId=searchAuthor.Id;
+                            if (searchAuthor == null)
+                            {
+                                throw new NullReferenceException();
+                            }
+                            else
+                            {
+                                book.AuthorId = searchAuthor.Id;
 
-                            Console.Write("Введите ID ажанра книги: ");
-                            int genreBookId;
-                            var searchGenre = new Genre();
-                            try
-                            {
-                                if (int.TryParse(Console.ReadLine(), out genreBookId))
+                                Console.Write("Введите ID ажанра книги: ");
+                                int genreBookId;
+                                var searchGenre = new Genre();
+                                try
                                 {
-                                    searchGenre = db.Genres.Where(g => g.Id == genreBookId).FirstOrDefault();
-                                    try
+                                    if (int.TryParse(Console.ReadLine(), out genreBookId))
                                     {
-                                        if (searchGenre == null)
+                                        searchGenre = db.Genres.Where(g => g.Id == genreBookId).FirstOrDefault();
+                                        try
                                         {
-                                            throw new NullReferenceException();
+                                            if (searchGenre == null)
+                                            {
+                                                throw new NullReferenceException();
+                                            }
+                                            else
+                                            {
+                                                book = new Book { Title = bookTitle, YearOfRealise = bookYearOfRealise, AuthorId = book.AuthorId, GenreId = searchGenre.Id };
+                                                db.Books.Add(book);
+                                                db.SaveChanges();
+                                                Console.WriteLine("Добавлена новая книга...");
+                                            }
                                         }
-                                        else
+                                        catch (NullReferenceException)
                                         {
-                                            book = new Book { Title = bookTitle, YearOfRealise = bookYearOfRealise, AuthorId = book.AuthorId, GenreId = searchGenre.Id };
-                                            db.Books.Add(book);
-                                            db.SaveChanges();
-                                            Console.WriteLine("Добавлена новая книга...");
+                                            Console.WriteLine("Жанра с таким ID нет в базе данных...\n");
                                         }
                                     }
-                                    catch (NullReferenceException)
+                                    else
                                     {
-                                        Console.WriteLine("Жанра с таким ID нет в базе данных...\n");
+                                        throw new NoIdException();
                                     }
                                 }
-                                else
+                                catch (NoIdException)
                                 {
-                                    throw new NoIdException();
+                                    Console.WriteLine("Жанра с таким ID нет в базе данных...\n");
                                 }
-                            }
-                            catch (NoIdException)
-                            {
-                                Console.WriteLine("Жанра с таким ID нет в базе данных...\n");
                             }
                         }
+                        catch (NullReferenceException)
+                        {
+                            Console.WriteLine("Автора с таким ID нет в базе данных...\n");
+                        }
                     }
-                    catch (NullReferenceException)
+                    else
                     {
-                        Console.WriteLine("Автора с таким ID нет в базе данных...\n");
+                        throw new NoIdException();
                     }
                 }
-                else
+                catch (NoIdException)
                 {
-                    throw new NoIdException();
+                    Console.WriteLine("Автора с таким ID нет в базе данных...\n");
                 }
+                #endregion
             }
-            catch (NoIdException)
+            else
             {
-                Console.WriteLine("Автора с таким ID нет в базе данных...\n");
+                Console.WriteLine("Введите корректные данные...");
             }
-            #endregion
+
+            
         }
 
         public void Drop(AppContext db)
@@ -204,10 +213,17 @@ namespace Library.DAL.Repositories
                         else
                         {
                             Console.Write("Введите новый год выпуска книги: ");
-                            var newYearOfRealiseBook = Console.ReadLine();
-                            book.YearOfRealise = newYearOfRealiseBook;
-                            db.SaveChanges();
-                            Console.WriteLine("Год выпуска изменен...");
+                            int newYearOfRealiseBook;
+                            if (int.TryParse(Console.ReadLine(),out newYearOfRealiseBook))
+                            {
+                                book.YearOfRealise = newYearOfRealiseBook;
+                                db.SaveChanges();
+                                Console.WriteLine("Год выпуска изменен...");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Введите корректные данные...");
+                            }
                         }
                     }
                     catch (NullReferenceException)

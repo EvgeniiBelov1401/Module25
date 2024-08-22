@@ -4,6 +4,7 @@ using AppContext = Library.DAL.AppContext;
 using Library.DAL.Entities;
 using Library.DAL.Repositories;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using System.Linq;
 
 namespace Library
 {
@@ -15,11 +16,11 @@ namespace Library
             {
                 var user = new UserRepository();
                 var book = new BookRepository(db);
-
+                var select = new SelectRepository();
                 
                 while (true)
                 {
-                    Console.WriteLine("Список команд для работы с базой данных:");
+                    Console.WriteLine("\tСписок команд для работы с базой данных:");
                     Console.WriteLine($"{Comands.adduser}  -  добавить нового пользователя");
                     Console.WriteLine($"{Comands.addbook}  -  добавить новую книгу");
                     Console.WriteLine($"{Comands.dropuser}  -  удалить пользователя");
@@ -30,6 +31,10 @@ namespace Library
                     Console.WriteLine($"{Comands.showbookbyid}  -  показать книгу по ID");
                     Console.WriteLine($"{Comands.updateuser}  -  изменить имя пользователя");
                     Console.WriteLine($"{Comands.updatebook}  -  изменить год выпуска книги");
+                    if (db.Users.Count()>0 && db.Books.Count()>0)
+                    {
+                        SelectRepository.AddExerciseList();
+                    }
                     Console.Write("\nВведите команду: ");
                     var comand=Console.ReadLine();
 
@@ -64,6 +69,9 @@ namespace Library
                             break;
                         case nameof(Comands.updatebook):
                             book.Update(db);
+                            break;
+                        case nameof(Comands.ex1):
+                            select.ExecuteEx1(db);
                             break;
                         default:
                             Console.WriteLine("Введите корректную команду!!!");
