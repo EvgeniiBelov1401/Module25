@@ -82,6 +82,9 @@ namespace Library
                         case nameof(Comands.ex4):
                             select.ExecuteEx4(db);
                             break;
+                        case nameof(Comands.ex5):
+                            select.ExecuteEx5(db);
+                            break;
                         default:
                             Console.WriteLine("Введите корректную команду!!!");
                             break;

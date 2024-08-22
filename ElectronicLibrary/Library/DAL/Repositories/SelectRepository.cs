@@ -103,6 +103,17 @@ namespace Library.DAL.Repositories
 
             Console.WriteLine($"Наличие в библиотеке книги {choosenBook} автора {choosenAuthor}: {authorToBook}");
         }
+        public void ExecuteEx5(AppContext db)
+        {
+            Console.Write("Введите имя пользователя: ");
+            var choosenUser = Console.ReadLine();
+            Console.Write("Введите название книги: ");
+            var choosenBook = Console.ReadLine();
+
+            var userToBook = db.Users.Where(u=>u.Name==choosenUser).Include(b=>b.Book).Where(b=>b.Book.Title==choosenBook).Any();
+
+            Console.WriteLine($"У клиента {choosenUser} есть книга {choosenBook}: {userToBook}");
+        }
 
         public static void AddExerciseList()
         {
