@@ -123,7 +123,10 @@ namespace Library.DAL.Repositories
         }
         public void ExecuteEx7(AppContext db)
         {
+            var lastRealiseBook = db.Books.Max(b => b.YearOfRealise);
+            var nameLastRealiseBook=db.Books.Where(b=>b.YearOfRealise==lastRealiseBook).Select(b=>b.Title).FirstOrDefault();
 
+            Console.WriteLine($"Последняя вышедшая книга: {nameLastRealiseBook} ({lastRealiseBook})");
         }
         public void ExecuteEx8(AppContext db)
         {
