@@ -23,7 +23,6 @@ namespace Library
                     AddMainComands(db);
                     ChooseComand(db, user,book,select);
 
-
                     Console.ReadLine();
                     Console.Clear();
                 }
