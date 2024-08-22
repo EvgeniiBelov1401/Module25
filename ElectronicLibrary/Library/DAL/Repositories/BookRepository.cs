@@ -100,9 +100,7 @@ namespace Library.DAL.Repositories
             else
             {
                 Console.WriteLine("Введите корректные данные...");
-            }
-
-            
+            }            
         }
 
         public void Drop(AppContext db)

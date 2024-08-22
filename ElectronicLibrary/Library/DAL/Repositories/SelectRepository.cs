@@ -147,7 +147,6 @@ namespace Library.DAL.Repositories
             }
         }
 
-
         public static void AddExerciseList()
         {
             Console.WriteLine("\tСписок дополнительных команд для работы с базой данных:");
