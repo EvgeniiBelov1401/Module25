@@ -121,6 +121,19 @@ namespace Library.DAL.Repositories
             var bookCountOnUser=db.Users.Where(u=>u.Name==userName).Include(b=>b.Book).Count();
             Console.WriteLine($"У клиента {userName} книг в количестве: {bookCountOnUser} шт.");
         }
+        public void ExecuteEx7(AppContext db)
+        {
+
+        }
+        public void ExecuteEx8(AppContext db)
+        {
+            var sortedBook = db.Books.OrderBy(b=>b.Title).ToList();
+
+            foreach(var book in sortedBook)
+            {
+                Console.WriteLine(book.Title);
+            }
+        }
 
         public static void AddExerciseList()
         {

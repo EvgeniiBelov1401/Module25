@@ -88,6 +88,12 @@ namespace Library
                         case nameof(Comands.ex6):
                             select.ExecuteEx6(db);
                             break;
+                        case nameof(Comands.ex7):
+                            select.ExecuteEx7(db);
+                            break;
+                        case nameof(Comands.ex8):
+                            select.ExecuteEx8(db);
+                            break;
                         default:
                             Console.WriteLine("Введите корректную команду!!!");
                             break;
