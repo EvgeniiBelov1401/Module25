@@ -134,6 +134,16 @@ namespace Library.DAL.Repositories
                 Console.WriteLine(book.Title);
             }
         }
+        public void ExecuteEx9(AppContext db)
+        {
+            var sortedBook = db.Books.OrderByDescending(b=>b.YearOfRealise).ToList();
+
+            foreach (var book in sortedBook)
+            {
+                Console.WriteLine($"{book.Title} ({book.YearOfRealise})");
+            }
+        }
+
 
         public static void AddExerciseList()
         {
