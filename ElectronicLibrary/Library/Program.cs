@@ -31,7 +31,7 @@ namespace Library
                     Console.WriteLine($"{Comands.showbookbyid}  -  показать книгу по ID");
                     Console.WriteLine($"{Comands.updateuser}  -  изменить имя пользователя");
                     Console.WriteLine($"{Comands.updatebook}  -  изменить год выпуска книги");
-                    if (db.Users.Count()>0 && db.Books.Count()>0)
+                    if (db.Users.Count()>0 || db.Books.Count()>0)
                     {
                         SelectRepository.AddExerciseList();
                     }
@@ -78,6 +78,9 @@ namespace Library
                             break;
                         case nameof(Comands.ex3):
                             select.ExecuteEx3(db);
+                            break;
+                        case nameof(Comands.ex4):
+                            select.ExecuteEx4(db);
                             break;
                         default:
                             Console.WriteLine("Введите корректную команду!!!");

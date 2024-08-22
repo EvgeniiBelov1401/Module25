@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Library.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,6 +91,17 @@ namespace Library.DAL.Repositories
             {
                 Console.WriteLine($"В библиотеке книг жанра {choosenGenre}: {booksByGenreCount} шт.");
             }
+        }
+        public void ExecuteEx4(AppContext db)
+        {
+            Console.Write("Введите имя автора: ");
+            var choosenAuthor=Console.ReadLine();
+            Console.Write("Введите название книги: ");
+            var choosenBook = Console.ReadLine();
+
+            var authorToBook = db.Books.Where(b=>b.Title== choosenBook).Include(a=>a.Author).Where(a=>a.Author.Name==choosenAuthor).Any();
+
+            Console.WriteLine($"Наличие в библиотеке книги {choosenBook} автора {choosenAuthor}: {authorToBook}");
         }
 
         public static void AddExerciseList()
