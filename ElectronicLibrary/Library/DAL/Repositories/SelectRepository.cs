@@ -114,6 +114,13 @@ namespace Library.DAL.Repositories
 
             Console.WriteLine($"У клиента {choosenUser} есть книга {choosenBook}: {userToBook}");
         }
+        public void ExecuteEx6(AppContext db)
+        {
+            Console.Write("Введите имя пользователя: ");
+            var userName=Console.ReadLine();
+            var bookCountOnUser=db.Users.Where(u=>u.Name==userName).Include(b=>b.Book).Count();
+            Console.WriteLine($"У клиента {userName} книг в количестве: {bookCountOnUser} шт.");
+        }
 
         public static void AddExerciseList()
         {
