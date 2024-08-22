@@ -10,11 +10,8 @@ namespace Library.DAL.Repositories
     {
         void Add(AppContext db);
         void Drop(AppContext db);
-
         void ShowAll(AppContext db);
-
         void ShowById(AppContext db);
-
         void Update(AppContext db);
     }
 }
